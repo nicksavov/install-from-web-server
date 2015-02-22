@@ -29,13 +29,16 @@ if(JDEBUG) {
 	</div>
 	<div class="full-item-container">
 		<h2>
-			<span><?php echo $extension_data->core_title->value; ?></span> 
+			<span><?php echo $extension_data->core_title->value; ?></span>
+			<?php if ($extension_data->popular->value == 1): ?>
+				 <span class="label label-info"><?php echo JText::_('COM_APPS_POPULAR_TEXT'); ?></span>
+			<?php endif; ?>
 		</h2>
-		
+
 		<div id="item-left-container" class="pull-left">
 			<img class="img img-polaroid" src="<?php echo $extension_data->image; ?>" width="200" />
 		</div>
-		
+
 		<div class="item-info-container pull-left">
 			<div class="rating">
 				<a target="_blank" href="<?php echo AppsHelper::getJEDUrl($extension_data) . '#reviews'; ?>">
@@ -47,10 +50,10 @@ if(JDEBUG) {
 					<?php echo JText::_('COM_APPS_EXTENSION_VERSION'); ?>
 				</div>
 				<div class="controls">
-					<?php 
+					<?php
 						echo $extension_data->version->value;
 						if ($extension_data->core_modified_time->value != '0000-00-00 00:00:00') {
-							echo ' ' . JText::sprintf('COM_APPS_EXTENSION_LAST_UPDATE', JHTML::date($extension_data->core_modified_time->value)); 
+							echo ' ' . JText::sprintf('COM_APPS_EXTENSION_LAST_UPDATE', JHTML::date($extension_data->core_modified_time->value));
 						}
 						?>
 				</div>
@@ -62,7 +65,7 @@ if(JDEBUG) {
 				</div>
 				<div class="controls">
 					<?php echo $extension_data->license->text; ?>
-					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 					<span><?php echo $extension_data->type->text; ?></span>
 				</div>
 			</div>
@@ -98,29 +101,29 @@ if(JDEBUG) {
 		</div>
 
 		<div class="clearfix"></div>
-		
-		<?php if ($extension_data->type > 1): ?>
+
+		<?php if ($extension_data->download_type > 1): ?>
 		<input id="joomlaapsinstallatinput" type="hidden" name="installat" value="" />
-		<input id="joomlaapsinstallfrominput" type="hidden" name="installfrom" value="<?php echo $extension_data->downloadurl; ?>" /> 
-		<input type="hidden" name="installapp" value="<?php echo $extension_data->link_id; ?>" /> 
+		<input id="joomlaapsinstallfrominput" type="hidden" name="installfrom" value="<?php echo $extension_data->downloadurl; ?>" />
+		<input type="hidden" name="installapp" value="<?php echo $extension_data->link_id; ?>" />
 		<?php endif; ?>
 		<div class="item-buttons form-actions">
-			<?php if ($extension_data->downloadurl && is_numeric($extension_data->type)): ?>
-				<?php if ($extension_data->type == 0): ?>
+			<?php if ($extension_data->downloadurl && is_numeric($extension_data->download_type)): ?>
+				<?php if ($extension_data->download_type == 0): ?>
 				<a target="_blank" class="transcode install btn btn-success" href="<?php echo $extension_data->downloadurl; ?>"><span class="icon-download"></span> <?php echo JText::_('COM_APPS_INSTALL_DOWNLOAD_EXTERNAL') . "&hellip;"; ?></a>
-				<?php elseif ($extension_data->type == 1): ?>
-				<a class="install btn btn-success" href="#" onclick="return Joomla.installfromweb('<?php echo $extension_data->downloadurl; ?>', '<?php echo $extension_data->link_name; ?>')"><span class="icon-checkmark"></span> <?php echo JText::_('COM_APPS_INSTALL') . "&hellip;"; ?></a>
-				<?php elseif ($extension_data->type == 2): ?>
+				<?php elseif ($extension_data->download_type == 1): ?>
+				<a class="install btn btn-success" href="#" onclick="return Joomla.installfromweb('<?php echo $extension_data->downloadurl; ?>', '<?php echo $extension_data->core_title->value; ?>')"><span class="icon-checkmark"></span> <?php echo JText::_('COM_APPS_INSTALL') . "&hellip;"; ?></a>
+				<?php elseif ($extension_data->download_type == 2): ?>
 				<button class="install btn btn-success" id="appssubmitbutton" onclick="return Joomla.installfromwebexternal('<?php echo $extension_data->downloadurl; ?>');" type="submit"><span class="icon-pencil"></span> <?php echo JText::_('COM_APPS_INSTALL_REGISTER') . "&hellip;"; ?></button>
-				<?php elseif ($extension_data->type == 3): ?>
+				<?php elseif ($extension_data->download_type == 3): ?>
 				<button class="install btn btn-success" id="appssubmitbutton" onclick="return Joomla.installfromwebexternal('<?php echo $extension_data->downloadurl; ?>');" type="submit"><span class="icon-cart"></span> <?php echo JText::_('COM_APPS_INSTALL_PURCHASE') . "&hellip;"; ?></button>
 				<?php endif; ?>&nbsp;&nbsp;&nbsp;
 			<?php elseif ($extension_data->download_link->value) : ?>
-				<?php if ((is_numeric($extension_data->type) && $extension_data->type == 0) || $extension_data->type == 1 || (strtolower($extension_data->type->value) == "free" && !$extension_data->requires_registration->value)): ?>
+				<?php if ((is_numeric($extension_data->download_type) && $extension_data->download_type == 0) || $extension_data->download_type == 1 || (strtolower($extension_data->download_type->value) == "free" && !$extension_data->requires_registration->value)): ?>
 				<a target="_blank" class="transcode install btn btn-success" href="<?php echo $extension_data->download_link->value; ?>"><span class="icon-download"></span> <?php echo JText::_('COM_APPS_INSTALL_DOWNLOAD_EXTERNAL') . "&hellip;"; ?></a>
-				<?php elseif ($extension_data->type == 2 || (strtolower($extension_data->type->value) == "free" && $extension_data->requires_registration->value)): ?>
+				<?php elseif ($extension_data->download_type == 2 || (strtolower($extension_data->download_type->value) == "free" && $extension_data->requires_registration->value)): ?>
 				<a target="_blank" class="install btn btn-success" href="<?php echo $extension_data->download_link->value; ?>"><span class="icon-pencil"></span> <?php echo JText::_('COM_APPS_INSTALL_REGISTER_DOWNLOAD_EXTERNAL') . "&hellip;"; ?></a>
-				<?php elseif ($extension_data->type == 3 || (strtolower($extension_data->type->value) != "free")): ?>
+				<?php elseif ($extension_data->download_type == 3 || (strtolower($extension_data->download_type->value) != "free")): ?>
 				<a target="_blank" class="install btn btn-success" href="<?php echo $extension_data->download_link->value; ?>"><span class="icon-cart"></span> <?php echo JText::_('COM_APPS_INSTALL_PURCHASE_EXTERNAL') . "&hellip;"; ?></a>
 				<?php endif; ?>&nbsp;&nbsp;&nbsp;
 			<?php endif; ?>
@@ -132,9 +135,9 @@ if(JDEBUG) {
 		</div>
 		<div class="item-desc">
 			<p class="item-desc-title">
-				<strong><?php echo $extension_data->core_title->text; ?></strong> 
+				<strong><?php echo $extension_data->core_title->text; ?></strong>
 				<?php if ($extension_data->core_created_user_id->value): ?>
-					<?php echo JText::sprintf('COM_APPS_EXTENSION_AUTHOR', $extension_data->core_created_user_id->text); ?>
+					 <?php echo JText::sprintf('COM_APPS_EXTENSION_AUTHOR', $extension_data->core_created_user_id->text); ?>
 				<?php endif; ?>
 			</p>
 			<p class="item-desc-text" align="justify">
@@ -143,5 +146,5 @@ if(JDEBUG) {
 		</div>
 		<div class="clearfix"></div>
 	</div>
-	<hr class="bottom-dash"></hr> 
+	<hr class="bottom-dash"></hr>
 </div>
